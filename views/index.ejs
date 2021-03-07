@@ -1,0 +1,72 @@
+<%- include('header'); -%>
+<div class="container">
+    <div class="container search">
+        <h1 class="heading">IP Address Tracker</h1><br>
+        <form action="/" method="post">
+            <div class="input-group mb-3 justify-content-center">
+                <input type="text" class="form-control ip-input input-group-lg" name="ip" placeholder="Search for any IP address or domain" aria-label="Search for any IP address or domain" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-dark search-btn" type="submit" name="submit"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="14">
+                            <path fill="none" stroke="#FFF" stroke-width="3" d="M2 1l6 6-6 6" /></svg></button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <% if (valid === 0) { %>
+    <div class="container failure">
+        <p>Please enter a valid IP address.</p>
+    </div>
+    <% } else { %>
+    <div class="container middle">
+        <div class="row middle-container">
+            <div class="col-12 col-md-3 vl first-col">
+                <span class="info-head">IP Address</span><br>
+                <span class="info">
+                    <%= ip %></span>
+            </div>
+            <div class="col-12 col-md-3 vl">
+                <span class="info-head">Location</span><br>
+                <span class="info">
+                    <%= region %>,
+                    <%= country %>,
+                    <%= postalCode %></span>
+            </div>
+            <div class="col-12 col-md-3 vl">
+                <span class="info-head">Timezone</span><br>
+                <span class="info">UTC
+                    <%= timezone %></span>
+            </div>
+            <div class="col-12 col-md-3">
+                <span class="info-head">ISP</span><br>
+                <span class="info">
+                    <%= isp %></span>
+            </div>
+        </div>
+    </div>
+    <% } %>
+</div>
+<div id="map"></div>
+<script>
+
+var lat = <%= lat %>;
+var long = <%= long %>;
+
+var mymap = L.map('map', { zoomControl: false }).setView([lat, long], 13);
+
+L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+    minZoom: 10,
+    maxZoom: 25,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+}).addTo(mymap);
+
+var myIcon = L.icon({
+    iconUrl: 'http://simpleicon.com/wp-content/uploads/map-marker-2.png',
+    iconSize: [50, 60],
+    iconAnchor: [22, 94],
+    popupAnchor: [-3, -76],
+});
+
+var marker = L.marker([lat, long], { icon: myIcon, riseOnHover: true }).addTo(mymap);
+marker.openPopup();
+</script>
+<%- include('footer'); -%>
