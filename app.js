@@ -10,10 +10,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.use(express.static("public"));
 
-require.extensions['.txt'] = function(module, filename) {
-    module.exports = fs.readFileSync(filename, 'utf8');
-};
-
 const key = process.env.API_KEY
 
 app.get('/', function(req, res) {
